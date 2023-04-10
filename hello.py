@@ -21,5 +21,29 @@ def chatgpt():
         messages=[{"role": "user", "content": message}]
     )
     return completion['choices'][0]['message']['content']
+@app.route('/search_code', methods=['GET'])
+def search_code():
+    language = request.args.get('language')
+    content = request.args.get('content')
+
+    if language is None or content is None:
+        return "Error: Missing language or content parameter", 400
+
+    prompt = f"Write {language} code to {content}:"
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return completion['choices'][0]['message']['content']
+@app.route('/generate_code', methods=['GET'])
+def generate_code():
+    language = request.args.get('language')
+    content = request.args.get('content')
+    prompt = f"generate {language} code:\n{content}"
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}]
+        )
+    return completion['choices'][0]['message']['content']
 
 
